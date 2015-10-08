@@ -1,13 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="template" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Ajar Aksara Sunda</name>
+<widget id="template" version="1.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Konverter Aksara</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Aplikasi yang dapat digunakan untuk konversi aksara latin ke dalam berbagai aksara lokal yang ada di Nusantara.
     </description>
-    <author email="arifbudi.arto@yahoo.com" href="http://phonegap.com">
+    <author email="arifbudi.arto@yahoo.com" href="http://semarme.com">
         Carakatama Semarme.com
     </author>
     <content src="index.html" />
+	<preference name="SplashScreen" value="splash" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
     <preference name="target-device" value="universal" />

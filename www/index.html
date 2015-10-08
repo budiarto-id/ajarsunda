@@ -10,17 +10,17 @@
 
 		<link rel="stylesheet" href="css/styles.css">
 
-        <title>App Name</title>
+        <title>Konverter Aksara</title>
     </head>
     <body>
         <div id="app">
             <div id="home-page" data-role="page">
                 <div data-role="content" >
                     <div id="menu">
-                        <a data-icon="flat-heart" data-theme="f" href="#second-page" data-role="button">Konverter</a>
-                        <a data-icon="flat-time" data-theme="f" href="#about-page"  data-role="button">Tentang Kami</a>
-                        <a data-icon="flat-time" data-theme="f" href="#due-page"  data-role="button">FAQ</a>
-                        <a data-icon="flat-time" data-theme="d" href="#due-page"  data-role="button" onclick="navigator.app.exitApp()">Keluar</a>
+                        <a data-icon="flat-new" data-theme="f" href="#second-page" data-role="button">Konverter</a>
+                        <a data-icon="flat-man" data-theme="f" href="#about-page"  data-role="button">Tentang Kami</a>
+                        <a data-icon="flat-heart" data-theme="f" href="#faq-page"  data-role="button">FAQ</a>
+                        <a data-icon="flat-cross" data-theme="d" href="#due-page"  data-role="button" onclick="navigator.app.exitApp()">Keluar</a>
                     </div>
                 </div>
             </div><!-- /page  -->
@@ -37,22 +37,45 @@
 					Alih aksara ke 	
 					<select id="jenisAksara" onclick="btLatin2Aksara()" onchange="btLatin2Aksara()">
 					  <option>Aksara Rejang</option>
-					  <option>Asara Lontara </option>
-					  
+					  <option>Asara Lontara (Makassar) </option>
 					  <option>Asara Lontara (Bugis)</option>
+					  <option>Aksara Bima (Mbojo)</option>
 					  <option>Asara Batak (Mandailing)</option>
-					  <option>Asara Batak (Simalungun)</option>
+					  <option>Asara Batak (Simalungun)</option><!--
 					  <option>Asara Batak (Pakpak)</option>
 					  <option>Asara Batak (Toba)</option>
 					  <option>Asara Batak (Karo)</option>
-					  
+					  -->
 					</select>
 					<br/>
-					<textarea id="aksaraLokal"></textarea>
+					<textarea id="aksaraLokal" readonly="readonly"></textarea>
 					<hr/>
 					</div>
             </div>
 
+            <div  id="faq-page" data-role="page">
+                <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
+                    <a href="#" data-rel="back" data-role="button" data-icon="arrow-l" data-inline="true" >Back</a>
+                    <h1>FAQ</h1>
+                </div>
+                <div data-role="content"  class="big-text">
+					<h4>Pertanyaan yang sering diajukan:</h4>
+					<ol>
+						<li>
+							Q : pertanyaan1<br/>
+							A : jawaban1
+						</li>
+						<li>
+							Q : pertanyaan2<br/>
+							A : jawaban2
+						</li>
+						<li>
+							Q : pertanyaan3<br/>
+							A : jawaban3
+						</li>
+					</ol>
+                </div>
+            </div>
 
             <div  id="about-page" data-role="page">
                 <div data-role="header" data-id="header1" data-position="fixed" class="ui-header">
@@ -60,8 +83,12 @@
                     <h1>Tentang</h1>
                 </div>
                 <div data-role="content"  class="big-text">
-                    <h2>Pengembang</h2>
-                    Aplikasi ini dikembangkan oleh Arif Budiarto bersama dengan semarme.com<br/>
+					<h2>Tentang Aplikasi</h2>
+					Versi : 1.0.1<br/>
+					Pengembang : Arif Budiarto, semarme.com<br/>
+					Aplikasi ini akan berfungsi dengan baik pada ponsel android minimal Kitkat.
+                    <h2>Tentang semarme.com</h2>
+                    <div style="align:justify">semarme.com aka Semar Multimedia adalah sebuah layanan penyedia jasa pembuatan media pembelajaran baik berupa hardware maupun software. Untuk informasi lengkap bisa dan melihat portofolio bisa langsung mengunjungi semarme.com</div>
                 </div>
             </div>
         </div>

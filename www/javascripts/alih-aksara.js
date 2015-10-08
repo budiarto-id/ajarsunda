@@ -6,18 +6,69 @@ PAT_KVK    = 0x04	//Konsonan + Vokal + Konsonan
 PAT_KRV    = 0x05	//Konsonan + Panjingan + Vokal
 PAT_KRVK   = 0x06	//Konsonan + Panjingan + Vokal + Konsonan
 PAT_SILABA = 0x07	//Konsonan
+PAT_KKV    = 0x08	//Konsonan Ganda + Vokal
 PAT_LAIN   = 0x00	//Sanesipun
 
 //Variabel jenis Aksara Lokal -------------------------------------------// 
 AK_REJANG     = 0x00
 AK_MAKASSAR   = 0x01
-AK_BUGIS      = 0xf2
-AK_MANDAILING = 0x02
-AK_SIMALUNGUN = 0x03
-AK_TOBA       = 0x04
-AK_PAKPAK     = 0x05
+AK_BUGIS      = 0x02
+AK_MBOJO      = 0x03
+AK_MANDAILING = 0x04
+AK_SIMALUNGUN = 0x05
+AK_TOBA       = 0x05
+AK_PAKPAK     = 0x06
 AK_KARO       = 0x07
 AK_LAIN       = 0xff
+
+//============================MBOJO VARIABLE============================//
+var MBOJO = new Array();
+
+MBOJO['b'] = ['b']
+MBOJO['c'] = ['c']
+MBOJO['d'] = ['d']
+MBOJO['f'] = ['f']
+MBOJO['g'] = ['g']
+MBOJO['h'] = ['h']
+MBOJO['j'] = ['j']
+MBOJO['k'] = ['k']
+MBOJO['l'] = ['l']
+MBOJO['m'] = ['m']
+MBOJO['n'] = ['n']
+MBOJO['p'] = ['p']
+MBOJO['q'] = ['k']
+MBOJO['r'] = ['r']
+MBOJO['s'] = ['s']
+MBOJO['t'] = ['t']
+MBOJO['v'] = ['f']
+MBOJO['w'] = ['w']
+MBOJO['x'] = ['s']
+MBOJO['y'] = ['y']
+MBOJO['z'] = ['j']
+MBOJO['mb'] = ['B']
+MBOJO['nc'] = ['C']
+MBOJO['nd'] = ['D']
+MBOJO['ng'] = ['G']
+MBOJO['ngg'] = ['g']
+MBOJO['nt'] = ['T']
+MBOJO['mp'] = ['P']
+// aksara swara ha, hi, hu
+MBOJO['A']  = 'A';//A984';
+MBOJO['I']  = 'I';
+MBOJO['U']  = 'U';
+MBOJO['E']  = 'E';
+MBOJO['O']  = 'O';
+// Diakritik
+MBOJO['a']  = '';
+MBOJO['i']  = 'i';
+MBOJO['u']  = 'u';
+MBOJO['e']  = 'e';
+MBOJO['o']  = 'o';
+MBOJO['+O'] = '\\';
+// pada (tanda baca)
+MBOJO['\n'] = '\r\n'; 
+MBOJO[' ']  = '';
+MBOJO['\t'] = '';
 
 //============================LONTARA VARIABLE============================//
 var LONTARA = new Array();
@@ -60,6 +111,7 @@ LONTARA['A']   = '\u1A15';//A984';
 LONTARA['I']   = '\u1A15\u1A17';
 LONTARA['U']   = '\u1A15\u1A18';
 LONTARA['E']   = '\u1A15\u1A19';
+LONTARA['E\'']   = '\u1A15\u1A19';
 LONTARA['O']   = '\u1A15\u1A1A';
 LONTARA['AE']  = '\u1A15\u1A1B';
 //
@@ -67,6 +119,7 @@ LONTARA['a']   = '';//A984';
 LONTARA['i']   = '\u1A17';
 LONTARA['u']   = '\u1A18';
 LONTARA['e']   = '\u1A19';
+LONTARA['e\'']   = '\u1A19';
 LONTARA['o']   = '\u1A1A';
 LONTARA['ae']  = '\u1A1B';
 // pada (tanda baca)
@@ -286,8 +339,8 @@ function latin2Makassar(strInp)
     var suku
     var polaWanda = PAT_LAIN
     
-    var KONS = 'ngk|ng|nyc|nc|ny|nr|mp|[bcdfghjklmnpqrstvwxyz]'
-    var VOK  = 'ae|[aeiuo]'
+    var KONS = 'ng|ny|[bcdfghjklmnpqrstvwxyz]'
+    var VOK  = '[aeiuo]'
     var SILABA = '^'
 	var TANDA = '[\n \t]'
     SILABA += '('+KONS+')?'             // group(1), K
@@ -364,7 +417,7 @@ function latin2Bugis(strInp)
     var polaWanda = PAT_LAIN
     
     var KONS = 'ngk|ng|nyc|nc|ny|nr|mp|[bcdghjklmnprstwy]'
-    var VOK  = 'ae|[aeiuo]'
+    var VOK  = 'e\'|[aeiuo]'
     var SILABA = '^'
 	var TANDA = '[\n \t]'
     SILABA += '('+KONS+')?'             // group(1), K
@@ -388,9 +441,11 @@ function latin2Bugis(strInp)
             if (polaWanda == PAT_KV) {
                 suku = r[1] + r[2]
 				silaba  = LONTARA[r[1]]
+				if (r[2] == 'e') r[2] = 'ae'
 				silaba += LONTARA[r[2]]
             }else {
                 suku = r[2]
+				if (suku == 'e') suku = 'ae'
                 silaba = LONTARA[suku.toUpperCase()]
             } // end if
             strOut += silaba 
@@ -422,6 +477,118 @@ function latin2Bugis(strInp)
 
     return strOut
 }
+
+//Fungsi Aksara Latin -> Aksara Aksara Mbojo -----------------------------//
+function latin2Mbojo(strInp)
+{    
+    var strMbojo = ''
+    
+    strInp = strInp.toLowerCase()
+
+    var inpLength = strInp.length
+    var idx = 0
+    var jump = 0
+
+    var strOut = ''
+    var r
+    var silaba
+    var suku
+    var polaWanda = PAT_LAIN
+    
+    var KONS = 'ngg|mb|nc|nd|ng|nt|mp|[bcdfghjklmnpqrstvwxyz]'
+    var VOK  = '[aeiuo]'
+    var SILABA = '^'
+	var TANDA = '[\n \t]'
+    SILABA += '('+KONS+')?'             // group(1), K
+    SILABA += '('+KONS+')?'             // group(2), K
+    SILABA += '('+VOK+')'               // group(3)V
+    KONSONAN = '^('+KONS+')'
+	TANDA_BACA = '^('+TANDA+')'
+    //var DIGIT = '^([0-9]+)'
+    
+    while (idx < inpLength) {
+        suku = ''
+        r = strInp.match(SILABA)
+		//return r;
+        if (r !== null) {
+            if (r[2]){
+				polaWanda = PAT_KKV
+			}else{
+				if(r[1]){
+					polaWanda = PAT_KV
+				}else{
+					polaWanda = PAT_V
+				}
+				//strOut += polaWanda
+			}
+            
+            // bentuk:
+			if (polaWanda == PAT_KKV){
+				suku = r[1] + r[2] + r[3]
+				if (r[3] == 'e'){
+					if (r[1] == r[2]){
+						silaba = MBOJO[r[3]]
+						silaba += MBOJO[r[1]]
+						silaba += 'x'
+					}else{
+						silaba = MBOJO[r[1]]
+						silaba += MBOJO['+O']
+						silaba += MBOJO[r[3]]
+						silaba += MBOJO[r[2]]
+					}
+				}else{
+					silaba = MBOJO[r[1]]
+					if (r[1] == r[2]){
+						silaba += 'x'
+					}else{
+						silaba += MBOJO['+O']
+						silaba += MBOJO[r[2]]
+					}
+					silaba += MBOJO[r[3]]
+				}
+			}else if (polaWanda == PAT_KV) {
+                suku = r[1] + r[3]
+				if (r[3] == 'e'){
+					silaba  = MBOJO[r[3]]
+					silaba += MBOJO[r[1]]
+				}else{
+					silaba  = MBOJO[r[1]]
+					silaba += MBOJO[r[3]]
+				}
+            }else if (polaWanda == PAT_V) {
+                suku = r[3]
+                silaba = MBOJO[suku.toUpperCase()]
+            } // end if
+            strOut += silaba 
+            polaWanda = PAT_SILABA
+        } else {
+            r = strInp.match(KONSONAN)
+            if (r != null) {
+                suku   = r[1]
+				silaba = MBOJO[suku] + MBOJO['+O']
+                strOut += silaba
+            } else {
+				r = strInp.match(TANDA_BACA)
+				if (r != null){
+					 suku = r[1]
+					 silaba = MBOJO[suku]
+					 strOut += silaba
+				}else{
+					suku = strInp.substr(0,1)
+					silaba = suku
+					strOut += suku
+				}
+            } // end if
+            polaWanda = PAT_LAIN
+        }// end if
+        strInp = strInp.substr(suku.length)
+        idx += suku.length
+    
+    }// end while
+
+    return strOut
+}
+
 
 //Fungsi Aksara Latin -> Aksara Rejang ---------------------------------------//
 function latin2Rejang(strInp)
@@ -917,12 +1084,22 @@ function btLatin2Aksara()
 	var strAksara =''
 	var jenisAksara = document.getElementById("jenisAksara").selectedIndex;
 	if (jenisAksara == AK_REJANG){
+		document.getElementById('aksaraLokal').setAttribute("style", "font-family: 'Prada-Regular'");
 		strAksara = latin2Rejang(latinText);   
 	}else if (jenisAksara == AK_MAKASSAR){
+		document.getElementById('aksaraLokal').setAttribute("style", "font-family: 'Prada-Regular'");
 		strAksara = latin2Makassar(latinText);   
+	}else if (jenisAksara == AK_BUGIS){
+		document.getElementById('aksaraLokal').setAttribute("style", "font-family: 'Prada-Regular'");
+		strAksara = latin2Bugis(latinText);   
+	}else if (jenisAksara == AK_MBOJO){
+		document.getElementById('aksaraLokal').setAttribute("style", "font-family: 'MbojoANSI-Regular'");
+		strAksara = latin2Mbojo(latinText);   
 	}else if (jenisAksara == AK_MANDAILING){
+		document.getElementById('aksaraLokal').setAttribute("style", "font-family: 'Prada-Regular'");
 		strAksara = latin2Mandailing(latinText);   
 	}else if (jenisAksara == AK_SIMALUNGUN){
+		document.getElementById('aksaraLokal').setAttribute("style", "font-family: 'Prada-Regular'");
 		strAksara = latin2Simalungun(latinText);   
 	}
 	document.getElementById('aksaraLokal').value = strAksara;
