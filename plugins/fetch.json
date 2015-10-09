@@ -1,0 +1,10 @@
+{
+    "com.admob.plugin": {
+        "source": {
+            "type": "local",
+            "path": "e:\\app\\admob\\plugin"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}

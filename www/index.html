@@ -14,6 +14,10 @@
     </head>
     <body>
         <div id="app">
+		
+        <div id="deviceready">
+
+        </div>
             <div id="home-page" data-role="page">
                 <div data-role="content" >
                     <div id="menu">
@@ -51,6 +55,10 @@
 					<textarea id="aksaraLokal" readonly="readonly"></textarea>
 					<hr/>
 					</div>
+					<script type="text/javascript">
+						admob.initAdmob("ca-app-pub-7933793630641042/2980861618","ca-app-pub-7933793630641042/2980861618");
+						admob.showBanner(admob.BannerSize.BANNER,admob.Position.TOP_APP);
+					</script>
             </div>
 
             <div  id="faq-page" data-role="page">
@@ -99,6 +107,14 @@
 		<script src="javascripts/alih-aksara.js"></script>
 		<script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="phonegap.js"></script>
+		<script type="text/javascript">
+        
+        function onDeviceReady() {
+
+            $.ui.toggleNavMenu();
+        }
+        document.addEventListener('deviceready', onDeviceReady, false);
+    </script>
 
 <!--
         <script type="text/javascript" src="js/index.js"></script> 
